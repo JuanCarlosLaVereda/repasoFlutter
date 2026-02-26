@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:repaso/screens/pokemon_search_screen.dart';
+import 'package:repaso/screens/welcome_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,7 +12,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: PokemonSearchPage()
+      home: WelcomeScreen()
     );
   }
 }

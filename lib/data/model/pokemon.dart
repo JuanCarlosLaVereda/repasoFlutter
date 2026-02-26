@@ -13,6 +13,6 @@ class Pokemon {
     return Pokemon(
         id: json['id'],
         name: json['name'],
-        image: json['sprites']['other']['official-adrtwork']['front_default']);
+        image: json['sprites']['other']['official-artwork']['front_default']);
   }
 }

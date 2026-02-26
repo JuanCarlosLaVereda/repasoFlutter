@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import '../data/model/pokemon.dart';
+import 'package:repaso/data/model/pokemon.dart';
 import '../data/repository.dart';
 
 class PokemonSearchPage extends StatefulWidget {
-  const PokemonSearchPage({super.key});
+  final int? edad;
+  final String? nombre;
+  const PokemonSearchPage({super.key, required this.edad, required this.nombre});
 
   @override
   State<PokemonSearchPage> createState() => _PokemonSearchPageState();
@@ -11,6 +13,7 @@ class PokemonSearchPage extends StatefulWidget {
 
 class _PokemonSearchPageState extends State<PokemonSearchPage> {
   final PokemonRepository _repository = PokemonRepository();
+
 
   String _pokemonName = '';
   Future<Pokemon>? _pokemonFuture;
@@ -26,56 +29,58 @@ class _PokemonSearchPageState extends State<PokemonSearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Buscador Pokémon'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Buscador Pokémon'),
+        centerTitle: true,
+      ),
       body: Column(
         children: [
-          TextFormField(
+          Text ("Hola ${widget.nombre}, tienes ${widget.edad} años"),
+          Image.asset("assets/images/pokeball.jpg", height: 25,),
+          TextField(
             decoration: InputDecoration(
-              labelText: "Nombre del Pokemon",
+              labelText: "Nombre del Pokémon",
               border: OutlineInputBorder(),
             ),
-            onChanged: (value) {
-              _pokemonName = value.trim();
+            onChanged: (value){
+              _pokemonName=value.trim();
             },
-            onFieldSubmitted: (_) => _searchPokemon(),
           ),
-          SizedBox(height: 20),
-          ElevatedButton(onPressed: _searchPokemon, child: Text("Buscar")),
-          SizedBox(height: 20),
-          if (_pokemonFuture != null)
-            FutureBuilder<Pokemon>(
-              future: _pokemonFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                }
-                if (snapshot.hasError) {
-                  return Text(
-                    snapshot.error.toString(),
-                    style: const TextStyle(color: Colors.red),
-                  );
-                }
-                if (snapshot.hasData) {
-                  final pokemon = snapshot.data!;
-                  return Column(
-                    children: [
-                      Image.network(pokemon.image, height: 150),
-                      SizedBox(height: 10),
-                      Text(
-                        pokemon.name.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  );
-                }
-                return const SizedBox();
-              },
-            ),
+          SizedBox(height: 20,),
+          ElevatedButton(
+              onPressed:_searchPokemon, child: Text('Buscar')),
+          SizedBox(height: 20,),
+
+          if (_pokemonFuture !=null )
+            FutureBuilder<Pokemon>(future: _pokemonFuture, builder: (context, snapshot){
+              if (snapshot.connectionState == ConnectionState.waiting){
+                return CircularProgressIndicator();
+              }
+              if (snapshot.hasError) {
+                return Text(
+                  snapshot.error.toString(),
+                  style: const TextStyle(color: Colors.red),
+                );
+              }
+              if (snapshot.hasData){
+                final pokemon = snapshot.data!;
+                return Column(children: [
+                  Image.network(pokemon.image, height: 150),
+                  SizedBox(height: 10),
+                  Text(pokemon.name.toUpperCase(),style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold))
+
+                ],);
+
+              }
+              return SizedBox();
+            })
+
         ],
+
       ),
+
     );
+
+
   }
 }
